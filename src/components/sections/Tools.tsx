@@ -120,7 +120,11 @@ const TextGenerator: React.FC = () => {
     <div className="space-y-6">
       <div>
         <label htmlFor="prompt" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+<<<<<<< HEAD
           Enter a prompt for the AI to Generate text  
+=======
+          Enter a prompt for the AI to Generate text
+>>>>>>> 4f5f33dc08f6719f904a0171f233055d18b37750
         </label>
         <textarea
           id="prompt"

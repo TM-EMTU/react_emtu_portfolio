@@ -10,7 +10,7 @@ app.use(express.json());
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'YOUR_GEMINI_API_KEY';
 
-// --- Knowledge Base Context for Chatbot Only ---
+// --- Knowledge   Base Context for Chatbot Only ---
 const context = `
 📌 Purpose:
 This AI assistant is purpose-built to handle all questions related to **Tanjil Mahmud Emtu**, his technical journey, skills, and projects.
@@ -92,6 +92,9 @@ app.post('/api/gemini', async (req, res) => {
         ]
       });
     }
+
+    console.log('CONTEXT:', context);
+    console.log('PROMPT:', prompt);
 
     // Otherwise, use Gemini with context
     const fullPrompt = `${context}\n\nUser: ${prompt}`;

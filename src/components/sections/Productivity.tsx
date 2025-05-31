@@ -2,49 +2,52 @@ import React, { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { FileText, Download, Clock, Brain, Sparkles, ChevronRight, BookOpen } from 'lucide-react';
 
+// Move resources array here, before the component function
+const resources = [
+    {
+    title: "Pre-Deep Work Preparation Guide",
+    description: "A simple, guide to help you prepare for deep work sessions.",
+    category: "guide",
+    icon: <BookOpen className="w-6 h-6" />,
+    downloads: 60,
+    downloadUrl: "/pdfs/Pre_Deep_Work_Preparation_Guide.pdf",
+    previewUrl: "https://miro.medium.com/v2/resize:fit:4800/format:webp/1*tj382zNssygSFWLNBhHiDg.jpeg"
+  },
+  {
+    title: "EmtuXBrain Daily Productivity Planner",
+    description: "A simple, printable planner to help you stay focused, track your day, and build productive habits.",
+    category: "guide",
+    icon: <Brain className="w-6 h-6" />,
+    downloads: 30,
+    previewUrl: "https://as1.ftcdn.net/jpg/01/40/53/12/1000_F_140531219_chCHBmALfRuKyyfZasWWT8eIM4f6wC2P.webp",
+    downloadUrl: "/pdfs/Daily_Productivity_Planner.pdf"
+  },
+  {
+    title: "Habit Tracker",
+    description: "A simple, printable Habit tracker to help you track your day, and build productive habits.",
+    category: "template",
+    icon: <FileText className="w-6 h-6" />,
+    downloads: 46,
+    downloadUrl: "https://docs.google.com/spreadsheets/d/1BVjDZNGF2YOkR5XY7DGIW1cv1I6PdEkHqLjvl4uqqLA/edit?usp=sharing",
+    previewUrl: "https://www.betterup.com/hs-fs/hubfs/Blog%20Images/Building%20good%20habits/building-good-habits-in-seven-steps-building-good-habits.png?width=1999&name=building-good-habits-in-seven-steps-building-good-habits.png"
+  },
+  {
+    title: "Not ableable for now",
+    description: "",
+    category: "template",
+    icon: <Clock className="w-6 h-6" />,
+    downloads: 2,
+    previewUrl: "https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg"
+  }
+];
+
 const Productivity: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
   const [activeCategory, setActiveCategory] = useState('all');
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [resourcesState, setResourcesState] = useState(resources);
   
-  const resources = [
-    {
-      title: "EmtuXBrain Daily Productivity Planner",
-      description: "A simple, printable planner to help you stay focused, track your day, and build productive habits.",
-      category: "guide",
-      icon: <Brain className="w-6 h-6" />,
-      downloads: 230,
-      previewUrl: "https://as1.ftcdn.net/jpg/01/40/53/12/1000_F_140531219_chCHBmALfRuKyyfZasWWT8eIM4f6wC2P.webp", // <-- Preview image URL
-      downloadUrl: "/pdfs/Daily_Productivity_Planner.pdf"           // <-- PDF for download
-    },
-    {
-      title: "Habit Tracker",
-      description: "A simple, printable Habit tracker to help you track your day, and build productive habits.",
-      category: "template",
-      icon: <FileText className="w-6 h-6" />,
-      downloads: 856,
-      downloadUrl: "/pdfs/30-Day_Study_Habit_Tracker (1).xlsx" ,          // <-- PDF for download
-      previewUrl: "https://www.betterup.com/hs-fs/hubfs/Blog%20Images/Building%20good%20habits/building-good-habits-in-seven-steps-building-good-habits.png?width=1999&name=building-good-habits-in-seven-steps-building-good-habits.png"
-    },
-    {
-      title: "Pre-Deep Work Preparation Guide",
-      description: "A simple, guide to help you prepare for deep work sessions.",
-      category: "guide",
-      icon: <BookOpen className="w-6 h-6" />,
-      downloads: 967,
-      downloadUrl: "/pdfs/Pre_Deep_Work_Preparation_Guide.pdf" ,          // <-- PDF for download
-      previewUrl: "https://miro.medium.com/v2/resize:fit:4800/format:webp/1*tj382zNssygSFWLNBhHiDg.jpeg"
-    },
-    {
-      title: "Not ableable for now",
-      description: "",
-      category: "template",
-      icon: <Clock className="w-6 h-6" />,
-      downloads: 0,
-      previewUrl: "https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg"
-    }
-  ];
-
   const categories = [
     { id: 'all', name: 'All Resources' },
     { id: 'guide', name: 'Guides' },
@@ -52,81 +55,124 @@ const Productivity: React.FC = () => {
   ];
 
   const filteredResources = activeCategory === 'all' 
-    ? resources 
-    : resources.filter(resource => resource.category === activeCategory);
+    ? resourcesState 
+    : resourcesState.filter(resource => resource.category === activeCategory);
+
+  const handleDownload = (index: number) => {
+    setResourcesState(prev =>
+      prev.map((res, i) =>
+        i === index ? { ...res, downloads: res.downloads + 1 } : res
+      )
+    );
+  };
 
   return (
-    <section 
-      id="productivity" 
-      ref={sectionRef}
-      className="section-padding py-20 relative overflow-hidden bg-gray-50 dark:bg-gray-900"
-    >
-      <div className="container mx-auto container-padding">
-        <motion.div 
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            <span className="gradient-text">Discipline Library</span>
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-           Boost your focus and take control of your time.
-Download free productivity sheets, planners, and tools designed to help you stay consistent, kill distractions, and win each day with clarity.
-          </p>
-        </motion.div>
+    <>
+      {previewUrl && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70" onClick={() => setPreviewUrl(null)}>
+          <div className="bg-white dark:bg-gray-900 rounded-lg p-4 max-w-2xl w-full relative" onClick={e => e.stopPropagation()}>
+            <button className="absolute top-2 right-2 text-gray-500 hover:text-gray-800" onClick={() => setPreviewUrl(null)}>✕</button>
+            {previewUrl.endsWith('.pdf') ? (
+              <iframe
+                src={previewUrl}
+                title="PDF Preview"
+                className="w-full h-[70vh] rounded"
+              />
+            ) : previewUrl.includes('docs.google.com/spreadsheets') ? (
+              <iframe
+                src={
+                  // Convert the Google Sheets link to embed format
+                  previewUrl.replace('/edit', '/preview').replace('?usp=sharing', '') + '?widget=true&headers=false'
+                }
+                title="Google Sheets Preview"
+                className="w-full h-[70vh] rounded"
+              />
+            ) : previewUrl.endsWith('.xlsx') ? (
+              <iframe
+                src={`https://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(previewUrl)}`}
+                title="Excel Preview"
+                className="w-full h-[70vh] rounded"
+              />
+            ) : (
+              <img src={previewUrl} alt="Preview" className="w-full h-auto rounded" />
+            )}
+          </div>
+        </div>
+      )}
+      <section 
+        id="productivity" 
+        ref={sectionRef}
+        className="section-padding py-20 relative overflow-hidden bg-gray-50 dark:bg-gray-900"
+      >
+        <div className="container mx-auto container-padding">
+          <motion.div 
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.5 }}
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              <span className="gradient-text">Discipline Library</span>
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+             Boost your focus and take control of your time.
+    Download free productivity sheets, planners, and tools designed to help you stay consistent, kill distractions, and win each day with clarity.
+            </p>
+          </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="flex justify-center mb-12"
-        >
-          <div className="inline-flex bg-white dark:bg-gray-800 rounded-lg p-1 shadow-neo dark:shadow-neo-dark">
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setActiveCategory(category.id)}
-                className={`px-6 py-2 rounded-md transition-all duration-300 ${
-                  activeCategory === category.id
-                    ? 'bg-primary-500 text-white shadow-md'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400'
-                }`}
-              >
-                {category.name}
-              </button>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="flex justify-center mb-12"
+          >
+            <div className="inline-flex bg-white dark:bg-gray-800 rounded-lg p-1 shadow-neo dark:shadow-neo-dark">
+              {categories.map((category) => (
+                <button
+                  key={category.id}
+                  onClick={() => setActiveCategory(category.id)}
+                  className={`px-6 py-2 rounded-md transition-all duration-300 ${
+                    activeCategory === category.id
+                      ? 'bg-primary-500 text-white shadow-md'
+                      : 'text-gray-600 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400'
+                  }`}
+                >
+                  {category.name}
+                </button>
+              ))}
+            </div>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {filteredResources.map((resource, index) => (
+              <ResourceCard 
+                key={index}
+                resource={resource}
+                index={index}
+                isInView={isInView}
+                onPreview={setPreviewUrl}
+                onDownload={handleDownload}
+              />
             ))}
           </div>
-        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {filteredResources.map((resource, index) => (
-            <ResourceCard 
-              key={index}
-              resource={resource}
-              index={index}
-              isInView={isInView}
-            />
-          ))}
-        </div>
-
-        <motion.div 
-          className="mt-16 text-center"
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 0.5, delay: 0.8 }}
-        >
-          <a 
-            href="#" 
-            className="inline-flex items-center neo-button"
+          <motion.div 
+            className="mt-16 text-center"
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ duration: 0.5, delay: 0.8 }}
           >
-            <span>View All Resources</span>
-            <ChevronRight size={16} className="ml-2" />
-          </a>
-        </motion.div>
-      </div>
-    </section>
+            <a 
+              href="#" 
+              className="inline-flex items-center neo-button"
+            >
+              <span>View All Resources</span>
+              <ChevronRight size={16} className="ml-2" />
+            </a>
+          </motion.div>
+        </div>
+      </section>
+    </>
   );
 };
 
@@ -141,9 +187,11 @@ interface ResourceCardProps {
   };
   index: number;
   isInView: boolean;
+  onPreview: (url: string) => void;
+  onDownload: (index: number) => void;
 }
 
-const ResourceCard: React.FC<ResourceCardProps> = ({ resource, index, isInView }) => {
+const ResourceCard: React.FC<ResourceCardProps> = ({ resource, index, isInView, onPreview, onDownload }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -188,7 +236,11 @@ const ResourceCard: React.FC<ResourceCardProps> = ({ resource, index, isInView }
         </p>
 
         <div className="flex justify-between items-center pt-4 border-t border-gray-200 dark:border-gray-700">
-          <button className="text-primary-600 dark:text-primary-400 font-medium hover:text-primary-700 dark:hover:text-primary-300 transition-colors flex items-center">
+          <button
+            className="text-primary-600 dark:text-primary-400 font-medium hover:text-primary-700 dark:hover:text-primary-300 transition-colors flex items-center"
+            onClick={() => onPreview(resource.downloadUrl || resource.previewUrl)}
+            type="button"
+          >
             <Sparkles size={16} className="mr-2" />
             Preview
           </button>
@@ -196,13 +248,14 @@ const ResourceCard: React.FC<ResourceCardProps> = ({ resource, index, isInView }
             <a
               href={resource.downloadUrl}
               download
+              onClick={() => onDownload(index)}
               className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center"
             >
               <Download size={16} className="mr-2" />
               Download
             </a>
           ) : (
-            <button className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center">
+            <button className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center" disabled>
               <Download size={16} className="mr-2" />
               Download
             </button>

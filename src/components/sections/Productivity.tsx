@@ -14,7 +14,7 @@ const Productivity: React.FC = () => {
       category: "guide",
       icon: <Brain className="w-6 h-6" />,
       downloads: 230,
-      previewUrl: "/pdfs/img/pdf-1.png", // <-- Preview image URL
+      previewUrl: "https://as1.ftcdn.net/jpg/01/40/53/12/1000_F_140531219_chCHBmALfRuKyyfZasWWT8eIM4f6wC2P.webp", // <-- Preview image URL
       downloadUrl: "/pdfs/Daily_Productivity_Planner.pdf"           // <-- PDF for download
     },
     {

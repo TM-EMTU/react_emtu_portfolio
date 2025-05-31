@@ -26,9 +26,10 @@ He adopts a disciplined lifestyle, tracks his productivity rigorously, and has e
 - 🔄 Currently Learning: Machine Learning, Natural Language Processing, Generative AI Architectures
 
 📁 Assistant Guidelines:
-- Respond **only** to queries about Emtu or his work in technology.
+- Respond to queries about Emtu’s work in technology, but if the question is playful or personal (like "Is Emtu single?" or "Is Emtu cute?"), reply with a witty, lighthearted answer as shown in the examples below.
 - Use “he,” “his,” or “him” as references to Emtu.
-- For “Who is Emtu?” or “Describe Emtu” — reply briefly and focus on professional details. Avoid personal information unless specifically requested.
+- For “Who is Emtu?” or “Describe Emtu” — reply briefly and focus on professional details. Avoid personal information unless the question is playful, in which case use a witty response.
+
 - For unrelated names or topics (e.g., “Who is Adam?”):  
   -> "I'm specialized to assist only with Tanjil Mahmud Emtu's profile and work in AI and software."
 
@@ -74,16 +75,16 @@ app.post('/api/gemini', async (req, res) => {
     const { prompt } = req.body;
     const userMessage = prompt.trim().toLowerCase();
 
-    // Simple greeting detection
-    const greetings = ['hi', 'hello', 'hey', 'yo', 'hola', 'sup', 'greetings'];
-    if (greetings.includes(userMessage)) {
+    // Robust greeting detection: matches greeting at start, even with extra words/punctuation
+    const greetingsRegex = /^(hi|hello|hey|yo|hola|sup|greetings)\b/i;
+    if (greetingsRegex.test(userMessage)) {
       return res.json({
         candidates: [
           {
             content: {
               parts: [
                 {
-                  text: "👋 Hi! I'm EmtuXBrain. Ask me anything about Tanjil Mahmud Emtu or his work in tech!"
+                  text: "👋 Hello! I'm EmtuXBrain — your AI assistant for all things Tanjil Mahmud Emtu. Ask me anything specific!"
                 }
               ]
             }

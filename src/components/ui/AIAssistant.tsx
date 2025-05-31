@@ -84,7 +84,7 @@ const AIAssistant: React.FC = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div 
-            style={{ width: width }}
+            style={{ width: width }}  
             className="fixed bottom-20 right-4 max-h-[80vh] h-[32rem] bg-white dark:bg-gray-900 rounded-xl shadow-xl overflow-hidden z-40 neo-box flex flex-col"
             initial={{ opacity: 0, y: 50, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}

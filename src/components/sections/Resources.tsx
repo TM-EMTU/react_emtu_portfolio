@@ -56,7 +56,7 @@ const resources = [
     icon: <Clock className="w-5 h-5" />,
     downloads: 2, 
     downloadUrl: "/default-preview.png",
-    previewUrl: ""
+    previewUrl: "/default-preview.png"
   },
 
 ];
@@ -67,6 +67,7 @@ const Resources: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState('all');
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [resourcesState, setResourcesState] = useState(resources);
+  const [showAll, setShowAll] = useState(false);
   
   const categories = [
     { id: 'all', name: 'All Resources' },
@@ -74,9 +75,9 @@ const Resources: React.FC = () => {
     { id: 'Programming', name: 'Programming' }
   ];
 
-  const filteredResources = activeCategory === 'all' 
-    ? resourcesState 
-    : resourcesState.filter(resource => resource.category === activeCategory);
+  const filteredResources = activeCategory === 'all'
+  ? (showAll ? resourcesState : resourcesState.slice(0, 4))
+  : resourcesState.filter(resource => resource.category === activeCategory);
 
   const handleDownload = (index: number) => {
     setResourcesState(prev =>
@@ -164,7 +165,7 @@ const Resources: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {filteredResources.map((resource, index) => (
-              resource && resource.previewUrl ? (
+              resource ? (
                 <ResourceCard 
                   key={index}
                   resource={resource}
@@ -177,20 +178,23 @@ const Resources: React.FC = () => {
             ))}
           </div>
 
-          <motion.div 
-            className="mt-16 text-center"
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ duration: 0.5, delay: 0.8 }}
-          >
-            <a 
-              href="#" 
-              className="inline-flex items-center neo-button"
-            >
-              <span>View All Resources</span>
-              <ChevronRight size={16} className="ml-2" />
-            </a>
-          </motion.div>
+          {activeCategory === 'all' && !showAll && resourcesState.length > 4 && (
+  <motion.div 
+    className="mt-16 text-center"
+    initial={{ opacity: 0 }}
+    animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+    transition={{ duration: 0.5, delay: 0.8 }}
+  >
+    <button 
+      onClick={() => setShowAll(true)}
+      className="inline-flex items-center neo-button"
+    >
+      <span>View All Resources</span>
+      <ChevronRight size={16} className="ml-2" />
+    </button>
+  </motion.div>
+)}
+
         </div>
       </section>
     </>

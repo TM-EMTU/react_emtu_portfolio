@@ -7,7 +7,7 @@ const resources = [
     {
     title: "Pre-Deep Work Preparation Guide",
     description: "A simple, guide to help you prepare for deep work sessions.",
-    category: "guide",
+    category: "Productivity", // changed from "guide"
     icon: <BookOpen className="w-6 h-6" />,
     downloads: 60,
     downloadUrl: "/pdfs/Pre_Deep_Work_Preparation_Guide.pdf",
@@ -16,7 +16,7 @@ const resources = [
   {
     title: "EmtuXBrain Daily Productivity Planner",
     description: "A simple, printable planner to help you stay focused, track your day, and build productive habits.",
-    category: "guide",
+    category: "Productivity", // changed from "guide"
     icon: <Brain className="w-6 h-6" />,
     downloads: 30,
     previewUrl: "https://as1.ftcdn.net/jpg/01/40/53/12/1000_F_140531219_chCHBmALfRuKyyfZasWWT8eIM4f6wC2P.webp",
@@ -25,37 +25,58 @@ const resources = [
   {
     title: "Habit Tracker",
     description: "A simple, printable Habit tracker to help you track your day, and build productive habits.",
-    category: "template",
+    category: "Productivity",
     icon: <FileText className="w-6 h-6" />,
     downloads: 46,
     downloadUrl: "https://docs.google.com/spreadsheets/d/1BVjDZNGF2YOkR5XY7DGIW1cv1I6PdEkHqLjvl4uqqLA/edit?usp=sharing",
     previewUrl: "https://www.betterup.com/hs-fs/hubfs/Blog%20Images/Building%20good%20habits/building-good-habits-in-seven-steps-building-good-habits.png?width=1999&name=building-good-habits-in-seven-steps-building-good-habits.png"
   },
   {
-    title: "Not ableable for now",
-    description: "",
-    category: "template",
+    title: "NLP Guide by EmtuX",
+    description: "A comprehensive guide to Natural Language Processing, covering key concepts, techniques, and applications.",
+    category: "Programming",
     icon: <Clock className="w-6 h-6" />,
-    downloads: 2,
-    previewUrl: "https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg"
-  }
+    downloads: 2, 
+    downloadUrl: "/pdfs/NLP_guide.pdf",
+    previewUrl: "pdfs/img/Cover_page.png"
+  },
+    {
+    title: "Not available now",
+    description: "...",
+    category: "",
+    icon: <BookOpen className="w-6 h-6" />,
+    downloads: 2, 
+    // downloadUrl: "/pdfs/NLP_guide.pdf",
+    previewUrl: "", // Provide a default string value
+  },
+    {
+    title: "Not available now",
+    description: "...",
+    category: "",
+    icon: <Clock className="w-5 h-5" />,
+    downloads: 2, 
+    // downloadUrl: "/pdfs/NLP_guide.pdf",
+    previewUrl: "", // Provide a default string value
+  },
+
 ];
 
-const Productivity: React.FC = () => {
+const Resources: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
   const [activeCategory, setActiveCategory] = useState('all');
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [resourcesState, setResourcesState] = useState(resources);
-  
+  const [showAll, setShowAll] = useState(false);
+
   const categories = [
     { id: 'all', name: 'All Resources' },
-    { id: 'guide', name: 'Guides' },
-    { id: 'template', name: 'Templates' }
+    { id: 'Productivity', name: 'Productivity' },
+    { id: 'Programming', name: 'Programming' }
   ];
 
-  const filteredResources = activeCategory === 'all' 
-    ? resourcesState 
+  const filteredResources = activeCategory === 'all'
+    ? (showAll ? resourcesState : resourcesState.slice(0, 4))
     : resourcesState.filter(resource => resource.category === activeCategory);
 
   const handleDownload = (index: number) => {
@@ -112,11 +133,10 @@ const Productivity: React.FC = () => {
             transition={{ duration: 0.5 }}
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              <span className="gradient-text">Discipline Library</span>
+              <span className="gradient-text">Resources Library</span>
             </h2>
             <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-             Boost your focus and take control of your time.
-    Download free productivity sheets, planners, and tools designed to help you stay consistent, kill distractions, and win each day with clarity.
+             Explore a growing collection of learning guides, templates, planners, and tools designed to help you learn smarter, stay organized, and achieve your goals.
             </p>
           </motion.div>
 
@@ -156,20 +176,22 @@ const Productivity: React.FC = () => {
             ))}
           </div>
 
-          <motion.div 
-            className="mt-16 text-center"
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ duration: 0.5, delay: 0.8 }}
-          >
-            <a 
-              href="#" 
-              className="inline-flex items-center neo-button"
+          {activeCategory === 'all' && !showAll && resourcesState.length > 4 && (
+            <motion.div 
+              className="mt-16 text-center"
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+              transition={{ duration: 0.5, delay: 0.8 }}
             >
-              <span>View All Resources</span>
-              <ChevronRight size={16} className="ml-2" />
-            </a>
-          </motion.div>
+              <button 
+                onClick={() => setShowAll(true)}
+                className="inline-flex items-center neo-button"
+              >
+                <span>View All Resources</span>
+                <ChevronRight size={16} className="ml-2" />
+              </button>
+            </motion.div>
+          )}
         </div>
       </section>
     </>
@@ -266,4 +288,4 @@ const ResourceCard: React.FC<ResourceCardProps> = ({ resource, index, isInView, 
   );
 };
 
-export default Productivity;
+export default Resources;

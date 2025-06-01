@@ -5,7 +5,7 @@ import About from './components/sections/About';
 import Projects from './components/sections/Projects';
 import Timeline from './components/sections/Timeline';
 import Tools from './components/sections/Tools';
-import Productivity from './components/sections/Productivity';
+import Resources from './components/sections/Resources';
 import Contact from './components/sections/Contact';
 import CursorTrail from './components/ui/CursorTrail';
 import { useThemeStore } from './store/themeStore';
@@ -26,7 +26,7 @@ function App() {
       <Projects />
       {/* <Timeline /> */}
       <Tools />
-      <Productivity />
+      <Resources />
       <Contact />
     </Layout>
   );

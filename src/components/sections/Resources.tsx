@@ -55,8 +55,8 @@ const resources = [
     category: "",
     icon: <Clock className="w-5 h-5" />,
     downloads: 2, 
-    // downloadUrl: "/pdfs/NLP_guide.pdf",
-    // previewUrl: "pdfs/img/Cover_page.png"
+    downloadUrl: "/default-preview.png",
+    previewUrl: ""
   },
 
 ];

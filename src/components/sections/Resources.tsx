@@ -167,7 +167,7 @@ const Resources: React.FC = () => {
             {filteredResources.map((resource, index) => (
               <ResourceCard 
                 key={index}
-                resource={resource}
+                                git pull origin main={resource}
                 index={index}
                 isInView={isInView}
                 onPreview={setPreviewUrl}

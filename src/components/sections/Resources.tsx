@@ -46,8 +46,8 @@ const resources = [
     category: "",
     icon: <BookOpen className="w-6 h-6" />,
     downloads: 2, 
-    // downloadUrl: "/pdfs/NLP_guide.pdf",
-    previewUrl: "", // Provide a default string value
+    previewUrl: "/default-preview.png",
+    downloadUrl: ""
   },
     {
     title: "Not available now",
@@ -56,7 +56,7 @@ const resources = [
     icon: <Clock className="w-5 h-5" />,
     downloads: 2, 
     // downloadUrl: "/pdfs/NLP_guide.pdf",
-    previewUrl: "", // Provide a default string value
+    // previewUrl: "pdfs/img/Cover_page.png"
   },
 
 ];
@@ -67,16 +67,15 @@ const Resources: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState('all');
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [resourcesState, setResourcesState] = useState(resources);
-  const [showAll, setShowAll] = useState(false);
-
+  
   const categories = [
     { id: 'all', name: 'All Resources' },
     { id: 'Productivity', name: 'Productivity' },
     { id: 'Programming', name: 'Programming' }
   ];
 
-  const filteredResources = activeCategory === 'all'
-    ? (showAll ? resourcesState : resourcesState.slice(0, 4))
+  const filteredResources = activeCategory === 'all' 
+    ? resourcesState 
     : resourcesState.filter(resource => resource.category === activeCategory);
 
   const handleDownload = (index: number) => {
@@ -165,33 +164,33 @@ const Resources: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {filteredResources.map((resource, index) => (
-              <ResourceCard 
-                key={index}
-                                git pull origin main={resource}
-                index={index}
-                isInView={isInView}
-                onPreview={setPreviewUrl}
-                onDownload={handleDownload}
-              />
+              resource && resource.previewUrl ? (
+                <ResourceCard 
+                  key={index}
+                  resource={resource}
+                  index={index}
+                  isInView={isInView}
+                  onPreview={setPreviewUrl}
+                  onDownload={handleDownload}
+                />
+              ) : null
             ))}
           </div>
 
-          {activeCategory === 'all' && !showAll && resourcesState.length > 4 && (
-            <motion.div 
-              className="mt-16 text-center"
-              initial={{ opacity: 0 }}
-              animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-              transition={{ duration: 0.5, delay: 0.8 }}
+          <motion.div 
+            className="mt-16 text-center"
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ duration: 0.5, delay: 0.8 }}
+          >
+            <a 
+              href="#" 
+              className="inline-flex items-center neo-button"
             >
-              <button 
-                onClick={() => setShowAll(true)}
-                className="inline-flex items-center neo-button"
-              >
-                <span>View All Resources</span>
-                <ChevronRight size={16} className="ml-2" />
-              </button>
-            </motion.div>
-          )}
+              <span>View All Resources</span>
+              <ChevronRight size={16} className="ml-2" />
+            </a>
+          </motion.div>
         </div>
       </section>
     </>
@@ -227,7 +226,7 @@ const ResourceCard: React.FC<ResourceCardProps> = ({ resource, index, isInView, 
     >
       <div className="relative h-48 overflow-hidden rounded-t-lg">
         <motion.img
-          src={resource.previewUrl}
+          src={resource.previewUrl || "/default-preview.png"}
           alt={resource.title}
           className="w-full h-full object-cover"
           animate={{

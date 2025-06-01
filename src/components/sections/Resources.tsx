@@ -164,18 +164,18 @@ const Resources: React.FC = () => {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {filteredResources.map((resource, index) => (
-              resource ? (
-                <ResourceCard 
-                  key={index}
-                  resource={resource}
-                  index={index}
-                  isInView={isInView}
-                  onPreview={setPreviewUrl}
-                  onDownload={handleDownload}
-                />
-              ) : null
-            ))}
+            {filteredResources.map((resource, index) =>
+  resource && resource.previewUrl ? (
+    <ResourceCard
+      key={index}
+      resource={resource}
+      index={index}
+      isInView={isInView}
+      onPreview={setPreviewUrl}
+      onDownload={handleDownload}
+    />
+  ) : null
+)}
           </div>
 
           {activeCategory === 'all' && !showAll && resourcesState.length > 4 && (

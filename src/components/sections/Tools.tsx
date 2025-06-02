@@ -244,24 +244,53 @@ const ImageClassifier: React.FC = () => {
           <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Classification Results:</h3>
           <div className="space-y-3">
             {results.map((result, index) => (
-              <div key={index} className="flex justify-between items-center">
-                <span className="text-gray-700 dark:text-gray-300">{result.label}</span>
-                <div className="w-2/3 flex items-center">
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
-                    <div 
-                      className="bg-primary-600 h-2.5 rounded-full" 
-                      style={{ width: `${result.confidence * 100}%` }}
-                    ></div>
-                  </div>
-                  <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">
-                    {(result.confidence * 100).toFixed(0)}%
-                  </span>
-                </div>
-              </div>
+              <AnimatedBar key={index} label={result.label} confidence={result.confidence} />
             ))}
           </div>
         </div>
       )}
+    </div>
+  );
+};
+
+const AnimatedBar: React.FC<{ label: string; confidence: number }> = ({ label, confidence }) => {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    let start = 0;
+    const end = confidence * 100;
+    const duration = 2000; // ms (adjust for speed)
+    const step = 10;
+    const increment = end / (duration / step);
+
+    setProgress(0);
+    const interval = setInterval(() => {
+      start += increment;
+      if (start >= end) {
+        setProgress(end);
+        clearInterval(interval);
+      } else {
+        setProgress(start);
+      }
+    }, step);
+
+    return () => clearInterval(interval);
+  }, [confidence]);
+
+  return (
+    <div className="flex justify-between items-center">
+      <span className="text-gray-700 dark:text-gray-300">{label}</span>
+      <div className="w-2/3 flex items-center">
+        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 overflow-hidden">
+          <div
+            className="bg-primary-600 h-2.5 rounded-full transition-all duration-75"
+            style={{ width: `${progress}%` }}
+          ></div>
+        </div>
+        <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">
+          {Math.round(progress)}%
+        </span>
+      </div>
     </div>
   );
 };

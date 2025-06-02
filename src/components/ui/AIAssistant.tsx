@@ -12,6 +12,7 @@ const AIAssistant: React.FC = () => {
   ]);
   const [input, setInput] = useState('');
   const [width, setWidth] = useState(320);
+  const [connecting, setConnecting] = useState(true); // <-- add this line
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -34,6 +35,13 @@ const AIAssistant: React.FC = () => {
     setMessages([...messages, { text: input, sender: 'user' }]);
     setInput('');
 
+    if (connecting) {
+      setMessages(prev => [
+        ...prev,
+        { text: "Server connecting, please wait up to 30 seconds...", sender: 'ai' }
+      ]);
+    }
+
     // Call Gemini proxy
     try {
       const res = await fetch('https://emtu-gemini-api.onrender.com/api/gemini', {
@@ -43,10 +51,19 @@ const AIAssistant: React.FC = () => {
       });
       const data = await res.json();
       const text = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No response from Gemini.';
-      setMessages(prev => [...prev, { text, sender: 'ai' }]);
+
+      setMessages(prev => {
+        // Remove the connecting message if it was added
+        let newPrev = prev;
+        if (connecting) {
+          newPrev = prev.filter(m => m.text !== "Server connecting, please wait up to 30 seconds...");
+        }
+        return [...newPrev, { text, sender: 'ai' }];
+      });
     } catch (err) {
       setMessages(prev => [...prev, { text: 'Error: Unable to get response from Gemini.', sender: 'ai' }]);
     }
+    setConnecting(false); // <-- only show connecting message for the first question
   };
 
   const startResize = (e: React.MouseEvent) => {
@@ -124,7 +141,21 @@ const AIAssistant: React.FC = () => {
                         <span className="text-xs font-semibold text-secondary-500">AI Assistant</span>
                       </div>
                     )}
-                    <p className="text-sm">{message.text}</p>
+                    {/* Animated connecting message */}
+                    {message.text === "Server connecting, please wait up to 30 seconds..." ? (
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                          Server connecting, please wait up to 30 seconds...
+                        </span>
+                        <span className="flex space-x-1">
+                          <span className="w-2 h-2 bg-secondary-500 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></span>
+                          <span className="w-2 h-2 bg-secondary-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></span>
+                          <span className="w-2 h-2 bg-secondary-500 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></span>
+                        </span>
+                      </div>
+                    ) : (
+                      <p className="text-sm">{message.text}</p>
+                    )}
                   </div>
                 </div>
               ))}

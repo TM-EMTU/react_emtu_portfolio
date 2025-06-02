@@ -11,7 +11,7 @@ const Projects: React.FC = () => {
       title: "YouTube Video Chatbot 🤖",
       description: "This project is a YouTube Video Chatbot that allows users to interact with the transcript of any YouTube video. It uses Generative AI (via Gemini) to answer questions based on the video’s transcript, making it a powerful tool for content interaction and retrieval.",
       icon: <Brain className="w-6 h-6" />,
-      tags: ["PyTorch", "Optimization", "Research"],
+      tags: ["Langchain", "Python", "Sklearn"],
       color: "from-blue-500 to-purple-600",
       github: "https://github.com/TM-EMTU/YouTube-Video-Chatbot/tree/main",
       live: "https://youtube-video-chatbot-3.onrender.com/"

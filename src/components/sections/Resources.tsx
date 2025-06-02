@@ -38,7 +38,7 @@ const resources = [
     icon: <Clock className="w-6 h-6" />,
     downloads: 2, 
     downloadUrl: "/pdfs/NLP_guide.pdf",
-    previewUrl: "pdfs/img/Cover_page.png"
+    previewUrl: "https://ik.imagekit.io/rmlbayysp/1748860138962-Cover_page_SfUhDrVKf1.png"
   },
     {
     title: "Not available now",

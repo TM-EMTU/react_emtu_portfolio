@@ -78,6 +78,7 @@ const TextGenerator: React.FC = () => {
   const [result, setResult] = useState('');
   const [displayed, setDisplayed] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [thinking, setThinking] = useState(false);
 
   // Typing effect
   useEffect(() => {
@@ -92,7 +93,7 @@ const TextGenerator: React.FC = () => {
         setDisplayed((prev) => prev + result[i]);
         i++;
       } else {
-        clearInterval(interval); // Stop exactly at the end, never append undefined
+        clearInterval(interval);
       }
     }, 18);
     return () => clearInterval(interval);
@@ -101,6 +102,7 @@ const TextGenerator: React.FC = () => {
   const handleGenerate = async () => {
     if (!prompt) return;
     setIsGenerating(true);
+    setThinking(true);
     setResult('');
     setDisplayed('');
     try {
@@ -109,8 +111,10 @@ const TextGenerator: React.FC = () => {
         { prompt }
       );
       const text = response.data.candidates?.[0]?.content?.parts?.[0]?.text || 'No response from Gemini.';
+      setThinking(false);
       setResult(text);
     } catch (error) {
+      setThinking(false);
       setResult('Error: Unable to generate text. Please check your API key and try again.');
     }
     setIsGenerating(false);
@@ -146,6 +150,17 @@ const TextGenerator: React.FC = () => {
           <span>{isGenerating ? 'Generating...' : 'Generate Text'}</span>
         </button>
       </div>
+      
+      {thinking && (
+        <div className="flex items-center space-x-2 text-primary-600 dark:text-primary-400 font-medium italic mb-2">
+          <span>Thinking</span>
+          <span className="flex space-x-1">
+            <span className="w-2 h-2 bg-primary-500 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></span>
+            <span className="w-2 h-2 bg-primary-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></span>
+            <span className="w-2 h-2 bg-primary-500 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></span>
+          </span>
+        </div>
+      )}
       
       {displayed && (
         <div className="mt-6 bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg border border-gray-200 dark:border-gray-700">

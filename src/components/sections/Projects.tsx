@@ -62,8 +62,8 @@ const Projects: React.FC = () => {
             <span className="gradient-text">Featured Projects</span>
           </h2>
           <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Explore a selection of my innovative AI research and development projects
-            that demonstrate practical applications of neural networks and machine learning.
+            Explore a selection of my innovative AI  development projects
+            that demonstrate practical applications of NLP and machine learning.
           </p>
         </motion.div>
         

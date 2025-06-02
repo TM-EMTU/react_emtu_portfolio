@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Brain, ChevronRight, Bot, BarChart, Eye } from 'lucide-react';
+import { Brain, ChevronRight, Bot, BarChart, Eye, Bolt, ExternalLink } from 'lucide-react';
 
 const Projects: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -8,32 +8,40 @@ const Projects: React.FC = () => {
   
   const projects = [
     {
-      title: "Neural Network Optimizer",
-      description: "Developed a novel optimization algorithm that reduces training time by 35% while improving accuracy by 5% compared to standard methods.",
+      title: "YouTube Video Chatbot 🤖",
+      description: "This project is a YouTube Video Chatbot that allows users to interact with the transcript of any YouTube video. It uses Generative AI (via Gemini) to answer questions based on the video’s transcript, making it a powerful tool for content interaction and retrieval.",
       icon: <Brain className="w-6 h-6" />,
       tags: ["PyTorch", "Optimization", "Research"],
-      color: "from-blue-500 to-purple-600"
+      color: "from-blue-500 to-purple-600",
+      github: "https://github.com/TM-EMTU/YouTube-Video-Chatbot/tree/main",
+      live: "https://youtube-video-chatbot-3.onrender.com/"
     },
     {
       title: "Conversational AI Assistant",
       description: "Built an advanced conversational agent capable of understanding context and maintaining coherent, helpful dialogues across various domains.",
       icon: <Bot className="w-6 h-6" />,
       tags: ["NLP", "Transformers", "Python"],
-      color: "from-purple-500 to-pink-600"
+      color: "from-purple-500 to-pink-600",
+      github: "https://github.com/yourusername/conversational-ai-assistant",
+      live: "https://conversational-ai-demo.com"
     },
     {
       title: "Predictive Analytics Platform",
       description: "Created a system that analyzes business data to predict market trends with 87% accuracy, helping clients make data-driven decisions.",
       icon: <BarChart className="w-6 h-6" />,
       tags: ["Data Science", "TensorFlow", "Dashboard"],
-      color: "from-green-500 to-teal-600"
+      color: "from-green-500 to-teal-600",
+      github: "https://github.com/yourusername/predictive-analytics-platform",
+      live: "https://predictive-analytics-demo.com"
     },
     {
       title: "Computer Vision Framework",
       description: "Developed a computer vision framework that enables real-time object detection, tracking, and classification for security applications.",
       icon: <Eye className="w-6 h-6" />,
       tags: ["OpenCV", "CNN", "Edge Computing"],
-      color: "from-orange-500 to-red-600"
+      color: "from-orange-500 to-red-600",
+      github: "https://github.com/yourusername/computer-vision-framework",
+      live: "https://computer-vision-demo.com"
     }
   ];
   
@@ -96,6 +104,8 @@ interface ProjectProps {
     icon: React.ReactNode;
     tags: string[];
     color: string;
+    github?: string;
+    live?: string;
   };
   index: number;
   isInView: boolean;
@@ -144,13 +154,35 @@ const ProjectCard: React.FC<ProjectProps> = ({ project, index, isInView }) => {
         </div>
         
         <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
-          <a 
-            href="#" 
-            className="text-primary-600 dark:text-primary-400 font-medium hover:text-primary-700 dark:hover:text-primary-300 transition-colors inline-flex items-center"
-          >
-            <span>View Project</span>
-            <ChevronRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform duration-300" />
-          </a>
+          <div className="flex flex-row gap-6 items-center">
+            {project.github && (
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative flex items-center pl-1 pr-1 text-primary-600 dark:text-primary-400 font-semibold transition-all duration-300
+                  after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-1 after:w-0 after:rounded after:bg-gradient-to-r after:from-primary-400 after:to-purple-500
+                  hover:after:w-full after:transition-all after:duration-500"
+                style={{ overflow: 'hidden' }}
+              >
+                View Project
+              </a>
+            )}
+            {project.live && (
+              <a
+                href={project.live}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative flex items-center pl-1 pr-1 text-green-600 dark:text-green-400 font-semibold transition-all duration-300
+                  after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-1 after:w-0 after:rounded after:bg-gradient-to-r after:from-green-400 after:to-emerald-500
+                  hover:after:w-full after:transition-all after:duration-500"
+                style={{ overflow: 'hidden' }}
+              >
+                <Bolt size={16} className="mr-1" />
+                Live
+              </a>
+            )}
+          </div>
         </div>
       </div>
     </motion.div>

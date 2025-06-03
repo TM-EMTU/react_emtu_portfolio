@@ -1,6 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { FileText, Download, Clock, Brain, Sparkles, ChevronRight, BookOpen } from 'lucide-react';
+import AnimatedBackground from '../ui/AnimatedBackground';
+import { useForm } from '@formspree/react';
 
 // Move resources array here, before the component function
 const resources = [
@@ -61,6 +63,12 @@ const resources = [
 
 ];
 
+const SUGGEST_KEY = "emtux_resource_suggested_at";
+const SUGGEST_LIMIT_HOURS = 24;
+
+const lastSuggest = localStorage.getItem(SUGGEST_KEY);
+const canSuggest = !lastSuggest || (Date.now() - Number(lastSuggest)) > SUGGEST_LIMIT_HOURS * 60 * 60 * 1000;
+
 const Resources: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
@@ -68,6 +76,17 @@ const Resources: React.FC = () => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [resourcesState, setResourcesState] = useState(resources);
   const [showAll, setShowAll] = useState(false);
+  const [showSubmission, setShowSubmission] = useState(false);
+  const [submission, setSubmission] = useState({
+    title: '',
+    description: '',
+    url: '',
+    category: '',
+    email: ''
+  });
+  const [submitted, setSubmitted] = useState(false);
+  const [state, handleSubmit] = useForm("mzzrqpja");
+  const [suggestState, handleSuggestSubmit] = useForm("mzzrqpja");
   
   const categories = [
     { id: 'all', name: 'All Resources' },
@@ -85,6 +104,16 @@ const Resources: React.FC = () => {
         i === index ? { ...res, downloads: res.downloads + 1 } : res
       )
     );
+  };
+
+  const onSuggestSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!canSuggest) {
+      alert("You can only suggest one resource every 24 hours.");
+      return;
+    }
+    await handleSuggestSubmit(e); // Call Formspree's handler
+    localStorage.setItem(SUGGEST_KEY, Date.now().toString());
   };
 
   return (
@@ -195,6 +224,88 @@ const Resources: React.FC = () => {
   </motion.div>
 )}
 
+<button
+  onClick={() => {
+    setShowSubmission(true);
+    setSubmitted(false);
+    setSubmission({ title: '', description: '', url: '', category: '', email: '' });
+  }}
+  className="mb-8 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition"
+>
+  Suggest a Resource
+</button>
+
+{showSubmission && (
+  <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+    <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg w-full max-w-md relative">
+      <button
+        className="absolute top-2 right-2 text-gray-400 hover:text-gray-700"
+        onClick={() => setShowSubmission(false)}
+      >✕</button>
+      <h3 className="text-lg font-bold mb-4">Suggest a Resource</h3>
+      {suggestState.succeeded ? (
+        <div className="text-green-600 font-semibold">Thank you for your suggestion!</div>
+      ) : (
+        <form
+          onSubmit={onSuggestSubmit}
+          className="space-y-3"
+        >
+          <input
+            className="w-full p-2 rounded border dark:bg-gray-800"
+            placeholder="Title"
+            name="title"
+            value={submission.title}
+            onChange={e => setSubmission({ ...submission, title: e.target.value })}
+            required
+          />
+          <textarea
+            className="w-full p-2 rounded border dark:bg-gray-800"
+            placeholder="Description"
+            name="description"
+            value={submission.description}
+            onChange={e => setSubmission({ ...submission, description: e.target.value })}
+            required
+          />
+          <input
+            className="w-full p-2 rounded border dark:bg-gray-800"
+            placeholder="Resource URL"
+            name="url"
+            value={submission.url}
+            onChange={e => setSubmission({ ...submission, url: e.target.value })}
+            required
+          />
+          <input
+            className="w-full p-2 rounded border dark:bg-gray-800"
+            placeholder="Category"
+            name="category"
+            value={submission.category}
+            onChange={e => setSubmission({ ...submission, category: e.target.value })}
+          />
+          <input
+            className="w-full p-2 rounded border dark:bg-gray-800"
+            placeholder="Your Email (optional)"
+            name="email"
+            value={submission.email}
+            onChange={e => setSubmission({ ...submission, email: e.target.value })}
+            type="email"
+          />
+          <button
+            type="submit"
+            className="w-full bg-primary-600 text-white py-2 rounded hover:bg-primary-700"
+            disabled={suggestState.submitting || !canSuggest}
+          >
+            {suggestState.submitting ? "Submitting..." : "Submit"}
+          </button>
+          {!canSuggest && (
+  <div className="text-red-500 text-sm mt-2">
+    You can only suggest one resource every 72 hours.
+  </div>
+)}
+        </form>
+      )}
+    </div>
+  </div>
+)}
         </div>
       </section>
     </>

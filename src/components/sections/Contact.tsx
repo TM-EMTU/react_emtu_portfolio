@@ -3,10 +3,26 @@ import { motion, useInView } from 'framer-motion';
 import { Send, Mail, MapPin, MessageCircle, Check } from 'lucide-react';
 import { useForm, ValidationError } from '@formspree/react';
 
+const CONTACT_KEY = "emtux_contacted_at";
+const CONTACT_LIMIT_HOURS = 72;
+
+const lastContact = localStorage.getItem(CONTACT_KEY);
+const canContact = !lastContact || (Date.now() - Number(lastContact)) > CONTACT_LIMIT_HOURS * 60 * 60 * 1000;
+
 const Contact: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
   const [state, handleSubmit] = useForm("mzzrqpja");
+
+  const handleContactSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!canContact) {
+      alert("You can only send a message every 72 hours.");
+      return;
+    }
+    await handleSubmit(e); // Call Formspree's handleSubmit
+    localStorage.setItem(CONTACT_KEY, Date.now().toString());
+  };
 
   return (
     <section 
@@ -135,7 +151,7 @@ I’m currently available for AI project consultations and selective collaborati
                   </p>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleContactSubmit}>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -186,18 +202,24 @@ I’m currently available for AI project consultations and selective collaborati
                       required
                       className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-primary-500 focus:border-primary-500"
                     />
-                    <ValidationError prefix="Message" field="message" errors={state.errors} />
-                  </div>
-                  <div className="flex justify-end">
+                  </div>      <ValidationError prefix="Message" field="message" errors={state.errors} />
+                  <div className="mt-4 flex justify-end">
                     <button
                       type="submit"
-                      disabled={state.submitting}
+                      disabled={state.submitting || !canContact}
                       className="flex items-center space-x-2 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors"
                     >
                       <Send size={18} />
-                      <span>{state.submitting ? "Sending..." : "Send Message"}</span>
+                      <span>
+                        {state.submitting ? "Sending..." : "Send Message"}
+                      </span>
                     </button>
                   </div>
+                  {!canContact && (
+                    <div className="text-red-500 text-sm mt-2">
+                      You can only send one message every 72 hours.
+                    </div>
+                  )}
                 </form>
               )}
             </div>

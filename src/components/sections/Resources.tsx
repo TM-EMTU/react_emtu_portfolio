@@ -20,7 +20,7 @@ const resources = [
     description: "A comprehensive guide to Natural Language Processing, covering key concepts, techniques, and applications.",
     category: "Programming",
     icon: <Clock className="w-6 h-6" />,
-    downloads: 2, 
+    downloads: 30, 
     downloadUrl: "/pdfs/NLP_guide.pdf",
     previewUrl: "https://ik.imagekit.io/rmlbayysp/1748860138962-Cover_page_SfUhDrVKf1.png"
   },
@@ -29,7 +29,7 @@ const resources = [
     description: "A simple, printable Habit tracker to help you track your day, and build productive habits.",
     category: "Productivity",
     icon: <FileText className="w-6 h-6" />,
-    downloads: 46,
+    downloads: 16,
     downloadUrl: "https://docs.google.com/spreadsheets/d/1BVjDZNGF2YOkR5XY7DGIW1cv1I6PdEkHqLjvl4uqqLA/edit?usp=sharing",
     previewUrl: "https://www.betterup.com/hs-fs/hubfs/Blog%20Images/Building%20good%20habits/building-good-habits-in-seven-steps-building-good-habits.png?width=1999&name=building-good-habits-in-seven-steps-building-good-habits.png"
   },
@@ -38,7 +38,7 @@ const resources = [
     description: "A simple, guide to help you prepare for deep work sessions.",
     category: "Productivity", // changed from "guide"
     icon: <BookOpen className="w-6 h-6" />,
-    downloads: 60,
+    downloads: 26,
     downloadUrl: "/pdfs/Pre_Deep_Work_Preparation_Guide.pdf",
     previewUrl: "https://miro.medium.com/v2/resize:fit:4800/format:webp/1*tj382zNssygSFWLNBhHiDg.jpeg"
   },

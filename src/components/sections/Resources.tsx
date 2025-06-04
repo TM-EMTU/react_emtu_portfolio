@@ -7,6 +7,15 @@ import { useForm } from '@formspree/react';
 // Move resources array here, before the component function
 const resources = [
     {
+    title: "Git & GitHub Guide",
+    description: "A beginner-friendly guide to Git and GitHub, covering essential commands and workflows.",
+    category: "Programming",
+    icon: <FileText className="w-6 h-6" />,
+    downloads: 48, 
+    downloadUrl: "/pdfs/Git_and_GitHub_Guide.pdf",
+    previewUrl: "https://media.licdn.com/dms/image/v2/D5612AQFGp9Te6E1Dsw/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1673375513790?e=1754524800&v=beta&t=e7kw06TwG5iql3PltlsXBNqAwK1yvsEtGOG7nn3MfwA"
+  },
+      {
     title: "Pre-Deep Work Preparation Guide",
     description: "A simple, guide to help you prepare for deep work sessions.",
     category: "Productivity", // changed from "guide"
@@ -14,15 +23,6 @@ const resources = [
     downloads: 60,
     downloadUrl: "/pdfs/Pre_Deep_Work_Preparation_Guide.pdf",
     previewUrl: "https://miro.medium.com/v2/resize:fit:4800/format:webp/1*tj382zNssygSFWLNBhHiDg.jpeg"
-  },
-  {
-    title: "EmtuXBrain Daily Productivity Planner",
-    description: "A simple, printable planner to help you stay focused, track your day, and build productive habits.",
-    category: "Productivity", // changed from "guide"
-    icon: <Brain className="w-6 h-6" />,
-    downloads: 30,
-    previewUrl: "https://as1.ftcdn.net/jpg/01/40/53/12/1000_F_140531219_chCHBmALfRuKyyfZasWWT8eIM4f6wC2P.webp",
-    downloadUrl: "/pdfs/Daily_Productivity_Planner.pdf"
   },
   {
     title: "Habit Tracker",

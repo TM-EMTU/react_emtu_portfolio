@@ -15,14 +15,14 @@ const resources = [
     downloadUrl: "/pdfs/Git_and_GitHub_Guide.pdf",
     previewUrl: "https://media.licdn.com/dms/image/v2/D5612AQFGp9Te6E1Dsw/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1673375513790?e=1754524800&v=beta&t=e7kw06TwG5iql3PltlsXBNqAwK1yvsEtGOG7nn3MfwA"
   },
-      {
-    title: "Pre-Deep Work Preparation Guide",
-    description: "A simple, guide to help you prepare for deep work sessions.",
-    category: "Productivity", // changed from "guide"
-    icon: <BookOpen className="w-6 h-6" />,
-    downloads: 60,
-    downloadUrl: "/pdfs/Pre_Deep_Work_Preparation_Guide.pdf",
-    previewUrl: "https://miro.medium.com/v2/resize:fit:4800/format:webp/1*tj382zNssygSFWLNBhHiDg.jpeg"
+    {
+    title: "NLP Guide by EmtuX",
+    description: "A comprehensive guide to Natural Language Processing, covering key concepts, techniques, and applications.",
+    category: "Programming",
+    icon: <Clock className="w-6 h-6" />,
+    downloads: 2, 
+    downloadUrl: "/pdfs/NLP_guide.pdf",
+    previewUrl: "https://ik.imagekit.io/rmlbayysp/1748860138962-Cover_page_SfUhDrVKf1.png"
   },
   {
     title: "Habit Tracker",
@@ -33,14 +33,14 @@ const resources = [
     downloadUrl: "https://docs.google.com/spreadsheets/d/1BVjDZNGF2YOkR5XY7DGIW1cv1I6PdEkHqLjvl4uqqLA/edit?usp=sharing",
     previewUrl: "https://www.betterup.com/hs-fs/hubfs/Blog%20Images/Building%20good%20habits/building-good-habits-in-seven-steps-building-good-habits.png?width=1999&name=building-good-habits-in-seven-steps-building-good-habits.png"
   },
-  {
-    title: "NLP Guide by EmtuX",
-    description: "A comprehensive guide to Natural Language Processing, covering key concepts, techniques, and applications.",
-    category: "Programming",
-    icon: <Clock className="w-6 h-6" />,
-    downloads: 2, 
-    downloadUrl: "/pdfs/NLP_guide.pdf",
-    previewUrl: "https://ik.imagekit.io/rmlbayysp/1748860138962-Cover_page_SfUhDrVKf1.png"
+        {
+    title: "Pre-Deep Work Preparation Guide",
+    description: "A simple, guide to help you prepare for deep work sessions.",
+    category: "Productivity", // changed from "guide"
+    icon: <BookOpen className="w-6 h-6" />,
+    downloads: 60,
+    downloadUrl: "/pdfs/Pre_Deep_Work_Preparation_Guide.pdf",
+    previewUrl: "https://miro.medium.com/v2/resize:fit:4800/format:webp/1*tj382zNssygSFWLNBhHiDg.jpeg"
   },
     {
     title: "Not available now",

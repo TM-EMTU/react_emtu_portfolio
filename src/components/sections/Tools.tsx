@@ -79,6 +79,7 @@ const TextGenerator: React.FC = () => {
   const [displayed, setDisplayed] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [thinking, setThinking] = useState(false);
+  const [showWaitMsg, setShowWaitMsg] = useState(false);
 
   // Typing effect
   useEffect(() => {
@@ -103,17 +104,28 @@ const TextGenerator: React.FC = () => {
     if (!prompt) return;
     setIsGenerating(true);
     setThinking(true);
+    setShowWaitMsg(false);
     setResult('');
     setDisplayed('');
+
+    // Show wait message after 3 seconds
+    const waitTimeout = setTimeout(() => {
+      setShowWaitMsg(true);
+    }, 3000);
+
     try {
       const response = await axios.post(
         'https://emtu-gemini-api.onrender.com/api/gemini-generic',
         { prompt }
       );
-      const text = response.data.candidates?.[0]?.content?.parts?.[0]?.text || 'No response from Gemini.';
+      clearTimeout(waitTimeout);
+      setShowWaitMsg(false);
       setThinking(false);
+      const text = response.data.candidates?.[0]?.content?.parts?.[0]?.text || 'No response from Gemini.';
       setResult(text);
     } catch (error) {
+      clearTimeout(waitTimeout);
+      setShowWaitMsg(false);
       setThinking(false);
       setResult('Error: Unable to generate text. Please check your API key and try again.');
     }
@@ -154,6 +166,17 @@ const TextGenerator: React.FC = () => {
       {thinking && (
         <div className="flex items-center space-x-2 text-primary-600 dark:text-primary-400 font-medium italic mb-2">
           <span>Thinking</span>
+          <span className="flex space-x-1">
+            <span className="w-2 h-2 bg-primary-500 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></span>
+            <span className="w-2 h-2 bg-primary-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></span>
+            <span className="w-2 h-2 bg-primary-500 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></span>
+          </span>
+        </div>
+      )}
+      
+      {showWaitMsg && (
+        <div className="flex items-center space-x-2 text-primary-600 dark:text-primary-400 font-medium italic mb-2">
+          <span>Server connecting, please wait up to 30 seconds...</span>
           <span className="flex space-x-1">
             <span className="w-2 h-2 bg-primary-500 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></span>
             <span className="w-2 h-2 bg-primary-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></span>

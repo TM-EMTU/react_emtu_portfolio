@@ -13,7 +13,7 @@ const resources = [
     icon: <FileText className="w-6 h-6" />,
     downloads: 48, 
     downloadUrl: "/pdfs/Git_and_GitHub_Guide.pdf",
-    previewUrl: "https://media.licdn.com/dms/image/v2/D5612AQFGp9Te6E1Dsw/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1673375513790?e=1754524800&v=beta&t=e7kw06TwG5iql3PltlsXBNqAwK1yvsEtGOG7nn3MfwA"
+    previewUrl: "https://media2.dev.to/dynamic/image/width=1000,height=420,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F7m545y27wvxmk76sdf43.jpg"
   },
     {
     title: "NLP Guide by EmtuX",
